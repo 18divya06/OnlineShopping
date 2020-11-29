@@ -1,0 +1,6 @@
+{
+    "env": {
+        "MONGO_ATLAS_PWD": "12345",
+        "DB":"node-shop"
+    }
+}
