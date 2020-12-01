@@ -21,7 +21,9 @@ router.post('/signup',(req, res)=>{
                     const user= new User({
                         _id: new mongoose.Types.ObjectId(),
                         email: req.body.email,
-                        password: hash
+                        password: hash,
+                        username: req.body.username,
+                        isadmin: req.body.isadmin
                     });
                     user.save().then(result =>{
                         console.log(result);
@@ -65,7 +67,9 @@ router.post('/login',(req, res)=>{
                 });
                 return res.status(200).json({
                     message: 'Auth Succcessful',
-                    token: token
+                    token: token,
+                    isadmin: user[0].isadmin,
+                    userId: user[0]._id
                 });
             }
             return res.status(401).json({

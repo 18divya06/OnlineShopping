@@ -1,16 +1,11 @@
 const express= require('express');
-const app=express();
-const expressLayouts = require('express-ejs-layouts');
-const indexRouter = require('./routes/index');
-const userRouter = require('./routes/users');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Cors = require('cors');
 
-app.set('view engine','ejs');
-app.set('views',__dirname + '/views');
-app.set('layout','layouts/layout');
 
+const app=express();
+app.use(Cors());
 mongoose.connect('mongodb+srv://admin:' + process.env.MONGO_ATLAS_PWD + '@node-shop.t2vdl.mongodb.net/' + process.env.DB + '?retryWrites=true&w=majority', {
     //useMongoClient: true
     useCreateIndex: true,
@@ -19,13 +14,15 @@ mongoose.connect('mongodb+srv://admin:' + process.env.MONGO_ATLAS_PWD + '@node-s
 });
 const db= mongoose.connection;
 db.on('error', error => console.error(error));
-db.once('open',()=> console.log('Connected to mongoDB'));
+db.once('open',()=> {console.log('Connected to mongoDB');
+});
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use(Cors());
+
+
 //CORS Error handling
-/*app.use((req, res, next) =>{
+app.use((req, res, next) =>{
     res.header('Access-Control-Allow-Origin','*');
     res.header('Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, Authorization');
@@ -34,8 +31,11 @@ app.use(Cors());
         return res.status(200).json({});
     }
     next();
-});*/
-app.use(expressLayouts);
+});
+
+const indexRouter = require('./routes/index');
+const userRouter = require('./routes/users');
+
 app.use(express.static('public'));
 app.use('/',indexRouter);
 app.use('/user',userRouter);
@@ -48,4 +48,5 @@ app.use((req, res)=>{
 process.on('warning', (warning) => {
     console.log(warning.stack);
 });*/
+
 app.listen(process.env.PORT || 3000)

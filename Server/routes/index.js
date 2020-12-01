@@ -7,6 +7,7 @@ router.get('/', (req,res) => {
     Product.find().exec().then(docs=>{
         console.log(docs);
         res.status(200).json({doc: docs});
+        return docs;
     }).catch(err => {
         console.log(err);
         res.status(500).json({
@@ -21,7 +22,8 @@ router.post('/', (req,res) => {
     const product = new Product({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
-        price: req.body.price
+        price: req.body.price,
+        description: req.body.description
     });
     product.save().then(result =>{
         console.log(result);
