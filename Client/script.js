@@ -59,6 +59,13 @@ $(document).ready(function(){
   $(document).on('click','div.delete-btn',function(event){
     deleteProduct($(this).attr("id"));
   });
+  $(document).on('click','div.detail-btn', function(event){
+    // detailProducts($(this).attr("id"));
+    var desId= $(this).attr("id");
+    var newId= '#' + desId.replace('detail','desc');
+    $(newId).toggle();
+    
+  });
   //error messages
   const showerror= function(message){
     var errortoast=`<div class="container"><div class="alert alert-danger alert-dismissible show" role="alert" id="error" style="align-content: center">
@@ -104,10 +111,11 @@ const getAllProducts = function(){fetch('http://localhost:3000')
               <p class="text-center">
                 $${a.price}
               </p>
+              <p id="${a._id}desc" style="display:none;">${a.description}</p>
           </div>
           <div class="card-read-more ">
-              <div  class="btn btn-link btn-block " id="${a._id}" style="color: #f9c200;">
-                 <div class="glyphicon glyphicon-list"> Details</div>
+              <div  class="btn btn-link btn-block "  style="color: #f9c200;">
+                 <div class="glyphicon glyphicon-list detail-btn" id="${a._id}detail"> Details</div>
               </div>
               `;
           if(localStorage.getItem("isadmin")!=null && localStorage.getItem("isadmin").localeCompare("true")===0){
@@ -279,3 +287,41 @@ const signUpUser=function(values){
   });
 
   }
+
+  //detail Product
+  const detailProducts = function(id){fetch('http://localhost:3000/'+id).then(res => {
+    if (res.status !== 200) {
+      throw new Error('Failed to fetch Details');
+    }
+    return res.json();
+  })
+  .then(resData => {
+    console.log(resData);
+      var element= `
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Name${resData.name}</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          Description
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <div>Price</div>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+  </div>`;
+$(".desModalClass").html(element);
+})
+.catch(err => {
+console.log(err);
+});
+}

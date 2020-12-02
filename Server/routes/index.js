@@ -85,7 +85,6 @@ router.patch('/:productId', (req,res) => {
      message: 'Deleted Product'
      });*/
      Product.remove({_id: id}).exec().then(result =>{
-        
          res.status(200).json(result);
      }).catch(err => {
         

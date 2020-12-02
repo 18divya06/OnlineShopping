@@ -21,13 +21,13 @@ exports.isAdminToken = (req, res, next) =>{
   if(req.body.userId){
       user.findById(req.body.userId).exec((err, user) => {
         if (err) {
-          res.status(500).send({ message: err });
-          return ;
+         return res.status(500).send({ message: err });
+         
         }else if(user.isadmin){
-          res.status(200).send({message: "You are admin"});
           next();
+        }else{
+          return res.status(403).send();
         }
-        return res.status(403).send({message: "Forbidden Request"});
-      
   });
-}};
+}
+};
