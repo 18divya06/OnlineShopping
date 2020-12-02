@@ -1,3 +1,4 @@
+
 // jquery Script
 $(document).ready(function(){
     $("#myBtn").click(function(){
@@ -40,7 +41,9 @@ $(document).ready(function(){
         });
         addProducts(values);
    });
-   
+   $("#delete-btn").click(function(event){
+        event.preventDefault();
+   });
  getAllProducts();
  
   });
@@ -77,7 +80,7 @@ const getAllProducts = function(){fetch('http://localhost:3000')
           var element= ` <div class="col-xs-12 col-sm-4">
           <div class="card">
           <a class="img-card" href="#">
-          <img  src="https://1.bp.blogspot.com/-Bii3S69BdjQ/VtdOpIi4aoI/AAAAAAAABlk/F0z23Yr59f0/s640/cover.jpg" />
+          <img  src="./static/4.jpg" />
         </a>
           <div class="card-content">
               <h4 class="card-title text-center"">
@@ -87,11 +90,13 @@ const getAllProducts = function(){fetch('http://localhost:3000')
               <p class="text-center">
                 $${a.price}
               </p>
-              <span class="login-func glyphicon glyphicon-trash"> Delete</span>
           </div>
           <div class="card-read-more ">
-              <a href="#" class="btn btn-link btn-block " id="${a._id}" style="color: #f9c200; font-weight: 900;">
+              <a href="#" class="btn btn-link btn-block " id="${a._id}" style="color: #f9c200;">
                  <div class="glyphicon glyphicon-list"> Details</div>
+              </a>
+              <a href="#" class="btn btn-link btn-block login-func" style="color: #d9534f;">
+                 <div class="glyphicon glyphicon-remove"> Delete</div>
               </a>
           </div>
       </div></div>`;
