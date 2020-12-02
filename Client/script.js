@@ -50,13 +50,15 @@ $(document).ready(function(){
         });
         addProducts(values);
    });
-   $("#delete-btn").click(function(event){
-        event.preventDefault();
+   getAllProducts();
+   $(".delete-btn").click(function(event){
+        console.log("deleted called");
+        deleteProduct($(this).attr("id"));
    });
- getAllProducts();
- 
   });
-
+  $(document).on('click','div.delete-btn',function(event){
+    deleteProduct($(this).attr("id"));
+  });
   //error messages
   const showerror= function(message){
     var errortoast=`<div class="container"><div class="alert alert-danger alert-dismissible show" role="alert" id="error" style="align-content: center">
@@ -87,8 +89,9 @@ const getAllProducts = function(){fetch('http://localhost:3000')
       })
       .then(resData => {
         console.log(resData.doc);
+        var elements = '';
         for(a of resData.doc){
-          var element= ` <div class="col-xs-12 col-sm-4">
+          var element= ` <div class="col-xs-12 col-sm-4" id="${a._id}parent">
           <div class="card">
           <a class="img-card" href="#">
           <img  src="./static/4.jpg" />
@@ -103,14 +106,14 @@ const getAllProducts = function(){fetch('http://localhost:3000')
               </p>
           </div>
           <div class="card-read-more ">
-              <a href="#" class="btn btn-link btn-block " id="${a._id}" style="color: #f9c200;">
+              <div  class="btn btn-link btn-block " id="${a._id}" style="color: #f9c200;">
                  <div class="glyphicon glyphicon-list"> Details</div>
-              </a>
+              </div>
               `;
           if(localStorage.getItem("isadmin")!=null && localStorage.getItem("isadmin").localeCompare("true")===0){
-              element+=`<a href="#" class="btn btn-link btn-block" style="color: #d9534f;">
-                  <div class="glyphicon glyphicon-remove"> Delete</div>
-              </a>
+              element+=`<div  class="btn btn-link btn-block" style="color: #d9534f;">
+                  <div class="glyphicon glyphicon-remove delete-btn" id="${a._id}" > Delete</div>
+              </div>
           </div>
           </div></div>`;
 
@@ -120,9 +123,11 @@ const getAllProducts = function(){fetch('http://localhost:3000')
           </div>
           </div></div>`;
           }
-      $(".card-data-js").append(element);
+          elements+=element;
+     
      // $(".login-func").css("display","block");
         }
+        $(".card-data-js").html(elements);
       })
       .catch(err => {
         console.log(err);
@@ -188,6 +193,7 @@ const signUpUser=function(values){
       localStorage.setItem('token', resData.token);
       localStorage.setItem('userId', resData.userId);
       localStorage.setItem('isadmin', resData.isadmin);
+      getAllProducts();
       $("#myModal").modal('hide');
       console.log("successs");
       successmessage('Succesfull!!!!!');
@@ -247,5 +253,29 @@ const signUpUser=function(values){
 
           //showerror(err);
         });
+
+  }
+  //delete prodcut
+  const deleteProduct= function(id){ fetch('http://localhost:3000/'+id, {
+          method:"DELETE",
+          headers: {
+            'x-access-token': localStorage.getItem("token"),
+            'Content-Type': 'application/json'
+          },
+          body:JSON.stringify({
+            userId: localStorage.getItem("userId")
+          })
+  }).then(resData =>{
+      
+      if(resData.status === 200) {
+          $("#"+ id + "parent").hide();
+        successmessage('Deletion successful');
+      }else{
+        showerror('Deletion failed !!!');
+        console.log("Deletion failed!!!");
+      }
+  }).catch(err=>{
+      showerror(err);
+  });
 
   }

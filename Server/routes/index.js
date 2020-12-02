@@ -79,14 +79,16 @@ router.patch('/:productId', (req,res) => {
      });
  });
 
- router.delete('/:productId', (req,res) => {
+ router.delete('/:productId',isAuth.verifyToken, isAuth.isAdminToken,(req,res) => {
   const id= req.params.productId;
      /* res.status(200).json({
      message: 'Deleted Product'
      });*/
      Product.remove({_id: id}).exec().then(result =>{
+        
          res.status(200).json(result);
      }).catch(err => {
+        
         console.log(err);
         res.status(500).json({
             error: err
