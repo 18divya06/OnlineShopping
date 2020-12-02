@@ -18,7 +18,7 @@ body {
   -moz-box-sizing: border-box;
        box-sizing: border-box;
   height: 100%;
-  width: 100%; 
+  width: 100%;
   background: #FFF;
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
@@ -75,7 +75,7 @@ body {
 /* Modals Style */
 .modal-header, .close{
     background-color: #f9c200;
-    color:white !important;
+    color:red;
     text-align: center;
     font-size: 30px;
   }

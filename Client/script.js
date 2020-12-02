@@ -1,6 +1,14 @@
 
 // jquery Script
 $(document).ready(function(){
+    if(localStorage.getItem("token")!=null){
+        $(".logged-in").hide();
+        $(".login-func").css("display","block");
+    }
+    $("#logoutbtn").click(function(){
+        localStorage.clear();
+        location.reload();
+    });
     $("#myBtn").click(function(){
       $("#myModal").modal();
     });
@@ -8,6 +16,7 @@ $(document).ready(function(){
       $("#myModal2").modal();
     });
     $("#addprod").click(function(){
+        $("#addProdModalError").hide();
       $("#myModalprod").modal();
     });
     $("#signup-form").submit(function(event){
@@ -50,20 +59,22 @@ $(document).ready(function(){
 
   //error messages
   const showerror= function(message){
-    var errortoast=`<div class="alert alert-danger alert-dismissible fade show" id="error">
-	<button type="button" class="close" data-dismiss="alert">&times;</button>
+    var errortoast=`<div class="container"><div class="alert alert-danger alert-dismissible show" role="alert" id="error" style="align-content: center">
+	
 	<strong>Error!</strong> ${message}
-  </div>`;
+	<button type="button" class="close" data-dismiss="alert" ><span aria-hidden="true">&times;</span></button>
+  </div></div>`;
   $("#error").remove();
-  $("nav").after(errortoast);
+  $("#main-content").before(errortoast);
 }
 const successmessage= function(message){
-    var errortoast=`<div class="alert alert-success alert-dismissible fade show" id="error">
-	<button type="button" class="close" data-dismiss="alert">&times;</button>
+    var errortoast=`<div class="container"><div class="alert alert-success alert-dismissible show" role="alert" id="error" style="align-content: center">
+	
 	<strong>Success!</strong> ${message}
-  </div>`;
+	<button type="button" class="close" data-dismiss="alert" ><span aria-hidden="true">&times;</span></button>
+  </div></div>`;
   $("#error").remove();
-  $("nav").after(errortoast);
+  $("#main-content").before(errortoast);
 }
 
 //Product fetch on page
@@ -95,17 +106,26 @@ const getAllProducts = function(){fetch('http://localhost:3000')
               <a href="#" class="btn btn-link btn-block " id="${a._id}" style="color: #f9c200;">
                  <div class="glyphicon glyphicon-list"> Details</div>
               </a>
-              <a href="#" class="btn btn-link btn-block login-func" style="color: #d9534f;">
-                 <div class="glyphicon glyphicon-remove"> Delete</div>
+              `;
+          if(localStorage.getItem("isadmin")!=null && localStorage.getItem("isadmin").localeCompare("true")===0){
+              element+=`<a href="#" class="btn btn-link btn-block" style="color: #d9534f;">
+                  <div class="glyphicon glyphicon-remove"> Delete</div>
               </a>
           </div>
-      </div></div>`;
+          </div></div>`;
+
+          }
+          else{
+              element+=`
+          </div>
+          </div></div>`;
+          }
       $(".card-data-js").append(element);
      // $(".login-func").css("display","block");
         }
       })
       .catch(err => {
-        showerror(err);
+        console.log(err);
       });
     }
 
@@ -182,6 +202,7 @@ const signUpUser=function(values){
 
   //add products 
   const addProducts=function(values){
+
     console.log(values.name);
  /* var formdata=new FormData();
   formdata.append('name',values.name);
@@ -204,6 +225,7 @@ const signUpUser=function(values){
       })
         .then(res => {
           if (res.status !== 200 && res.status !== 201) {
+              $("#addProdModalError").show();
             throw new Error('editing a post failed!');
           }
          // getAllProducts();
@@ -215,12 +237,15 @@ const signUpUser=function(values){
         })
         .then(resData => {
           console.log(resData);
+            $("#addProdModalError").hide();
           $("#myModalprod").modal('hide');
-
+          getAllProducts();
 
         })
         .catch(err => {
-          showerror(err);
+            $("#addProdModalError").show();
+
+          //showerror(err);
         });
 
   }

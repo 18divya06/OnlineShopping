@@ -11,8 +11,8 @@
 </head>
 <body>
     <!--Nav Bar -->
-   
-    <nav class="navbar navbar-default ">
+
+    <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
           <div class="navbar-header">
             <a class="navbar-brand nav-brand" href="#"><span style="color: black" >Style </span><span style="color: #F9C200"> It</span></a>
@@ -21,13 +21,15 @@
           <ul class="nav navbar-nav navbar-right">
             <button type="button" class="btn btn-default btn-lg logged-in" id="myBtn2"><span class="glyphicon glyphicon-user"></span> Sign Up</button>
             <button type="button" class="btn btn-default btn-lg logged-in" id="myBtn"><span class="glyphicon glyphicon-log-in" ></span> Login</button>
-            <div class="login-func">
+            <div class="login-func" id="logged-navbar">
             <button type="button" class="btn btn-default btn-lg " id="addprod"><span class="glyphicon glyphicon-plus"></span> Add products</button>
-            <button type="button" class="btn btn-default btn-lg " ><span class="glyphicon glyphicon-log-out"></span> Log Out</button></div>
+            <button type="button" class="btn btn-default btn-lg " id="logoutbtn"><span class="glyphicon glyphicon-log-out"></span> Log Out</button></div>
           </ul>
         </div></div>
       </nav>
+
       <!-- Modal Sign In -->
+
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
       <!-- Modal content-->
@@ -126,16 +128,20 @@
                   <label for="usrname"><span class="glyphicon glyphicon-tag"></span> Role</label>
                   <input type="text" class="form-control" id="usrname" placeholder="admin or seller" min="5" required>
                 </div>-->
-                <button type="submit" class="btn btn-succes btn-block" id="add-prod" onclick="myFunction()"><span class="glyphicon glyphicon-off" ></span> Add to Products</button>
+                <button type="submit" class="btn btn-succes btn-block" id="add-prod" ><span class="glyphicon glyphicon-off" ></span> Add to Products</button>
               </form>
+              <div class="alert alert-danger" id="addProdModalError" >
+              <div style="text-align: center;">Product Addition Failed! Try Again.</div>
+              </div>
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-default pull-left" data-dismiss="modal" ><span class="glyphicon glyphicon-remove"></span> Cancel</button>
             </div>
           </div></div></div>
       <!--  Product Cards-->
-            <div class="content">
-                <div class="container">
+    <div class="container" style="margin-top:8%;" >
+            <div class="content" id="main-content">
+
                     <div class="row card-data-js">
                         <!--
                           Content from server goes here -->
