@@ -18,9 +18,9 @@
           <div class="navbar-header">
             <a class="navbar-brand nav-brand" href="#"><span style="color: black" >Style </span><span style="color: #F9C200"> It</span></a>
           </div>
-          <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+          <!-- <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon" style="color: black;"></span>
-          </button>
+          </button> -->
           <div id="navbarCollapse" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <button type="button" class="btn btn-default btn-lg logged-in" id="myBtn2"><span class="glyphicon glyphicon-user"></span> Sign Up</button>
@@ -54,6 +54,9 @@
             </div>
           
               <button type="submit" class="btn btn-succes btn-block"><span class="glyphicon glyphicon-off"></span> Login</button>
+              <div class="alert alert-danger" id="logInModalError" >
+                <div style="text-align: center;">Login Failed! Try Again.</div>
+                </div>
           </form>
         </div>
         <div class="modal-footer">
@@ -91,11 +94,13 @@
               <label><input type="checkbox" value="" >Admin</label>
             </div>
             <button type="submit" class="btn btn-succes btn-block"><span class="glyphicon glyphicon-off" ></span> Sign Up</button>
+            <div class="alert alert-danger" id="signUpModalError" >
+              <div style="text-align: center;">Sign Up Failed! Try Again.</div>
+              </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-default pull-left" data-dismiss="modal" ><span class="glyphicon glyphicon-remove"></span> Cancel</button>
-          <p>Already a member?</p> <p class="modal fade" id="myModal" role="dialog"><a>Sign In</a></p>
         </div>
       </div></div></div>
 

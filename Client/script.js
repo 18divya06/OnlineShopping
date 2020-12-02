@@ -1,4 +1,3 @@
-
 // jquery Script
 $(document).ready(function(){
   const socketIo=io('http://localhost:3000');
@@ -14,9 +13,11 @@ $(document).ready(function(){
         location.reload();
     });
     $("#myBtn").click(function(){
+      $("#logInModalError").hide();
       $("#myModal").modal();
     });
     $("#myBtn2").click(function(){
+      $("#signUpModalError").hide();
       $("#myModal2").modal();
     });
     $("#addprod").click(function(){
@@ -72,18 +73,16 @@ $(document).ready(function(){
   });
   //error messages
   const showerror= function(message){
-    var errortoast=`<div class="container"><div class="alert alert-danger alert-dismissible show" role="alert" id="error" style="align-content: center">
-	
-	<strong>Error!</strong> ${message}
+    var errortoast=`<div class="container"><div class="alert alert-danger alert-dismissible show" role="alert"  style="align-content: center">
+	<strong>${message}</strong> 
 	<button type="button" class="close" data-dismiss="alert" ><span aria-hidden="true">&times;</span></button>
   </div></div>`;
   $("#error").remove();
   $("#main-content").before(errortoast);
 }
 const successmessage= function(message){
-    var errortoast=`<div class="container"><div class="alert alert-success alert-dismissible show" role="alert" id="error" style="align-content: center">
-	
-	<strong>Success!</strong> ${message}
+    var errortoast=`<div class="container"><div class="alert alert-success alert-dismissible show" role="alert" style="align-content: center">
+	<strong>${message}</strong> 
 	<button type="button" class="close" data-dismiss="alert" ><span aria-hidden="true">&times;</span></button>
   </div></div>`;
   $("#error").remove();
@@ -94,6 +93,7 @@ const successmessage= function(message){
 const getAllProducts = function(){fetch('http://localhost:3000')
       .then(res => {
         if (res.status !== 200) {
+          showerror("Error loading products!! Try again")
           throw new Error('Failed to fetch Product');
         }
         return res.json();
@@ -163,20 +163,24 @@ const signUpUser=function(values){
   })
     .then(res => {
       if (res.status === 422) {
+        $("#signUpModalError").show();
         throw new Error(res.message);
       }
       if (res.status !== 200 && res.status !== 201) {
-        throw new Error('Creating a user failed!');
+       $("#signUpModalError").show();
+        throw new Error('while creating a user!! Email already in use.');
       }
       return res.json();
     })
     .then(resData => {
-        successmessage('Signup Successful!!!!');
+        successmessage('Sign Up Successful. Login Now!!');
        // data-dismiss="modal"
+       $("#signUpModalError").hide();
        $("#myModal2").modal('hide');
 
     })
     .catch(err => {
+      $("#signUpModalError").show();
       showerror(err)
     });
   }
@@ -194,10 +198,12 @@ const signUpUser=function(values){
   })
     .then(res => {
       if (res.status === 422) {
+        $("#logInModalError").show();
         throw new Error(res.message);
       }
       if (res.status !== 200 && res.status !== 201) {
-        throw new Error('Login Failed');
+        $("#logInModalError").show();
+        throw new Error('User not authenticated!!');
       }
       return res.json();
     })
@@ -208,12 +214,13 @@ const signUpUser=function(values){
       getAllProducts();
       $("#myModal").modal('hide');
       console.log("successs");
-      successmessage('Succesfull!!!!!');
+      successmessage('Login Successful!!');
       $(".logged-in").hide();
       $(".login-func").css("display","block");
 
     })
     .catch(err => {
+      $("#logInModalError").show();
       showerror(err);
     });
   }
@@ -256,6 +263,7 @@ const signUpUser=function(values){
         .then(resData => {
           console.log(resData);
             $("#addProdModalError").hide();
+            successmessage("New Product Added succesfully!!!");
           $("#myModalprod").modal('hide');
          // getAllProducts();
 
