@@ -10,6 +10,7 @@ $(document).ready(function(){
       $("#myModalprod").modal();
     });
     $("#signup-form").submit(function(event){
+      event.preventDefault();
        var val=$('#signup-form :input');
        var values = {};
        val.each(function() {
@@ -21,6 +22,8 @@ $(document).ready(function(){
       signUpUser(values);
     });
     $("#login-form").submit(function(event){
+      event.preventDefault();
+      console.log("form submit");
       var val=$('#login-form :input');
       var values = {};
       val.each(function() {
@@ -29,6 +32,7 @@ $(document).ready(function(){
      logInUser(values);
    });
    $("#prod-form").submit(function(event){
+    event.preventDefault();
         var val=$('#prod-form :input');
         var values = {};
         val.each(function(){
@@ -36,6 +40,7 @@ $(document).ready(function(){
         });
         addProducts(values);
    });
+   
  getAllProducts();
  
   });
@@ -82,17 +87,16 @@ const getAllProducts = function(){fetch('http://localhost:3000')
               <p class="text-center">
                 $${a.price}
               </p>
+              <span class="login-func glyphicon glyphicon-trash"> Delete</span>
           </div>
-          <div class="card-read-more">
-              <a href="#" class="btn btn-link btn-block" id="${a._id}" style="color: #f9c200">
-                  Details
-              </a><hr>
-              <a href="#" class="btn btn-link btn-block login-func isadmin"  style="color: #f9c200">
-                  Delete
+          <div class="card-read-more ">
+              <a href="#" class="btn btn-link btn-block " id="${a._id}" style="color: #f9c200; font-weight: 900;">
+                 <div class="glyphicon glyphicon-list"> Details</div>
               </a>
           </div>
       </div></div>`;
       $(".card-data-js").append(element);
+     // $(".login-func").css("display","block");
         }
       })
       .catch(err => {
@@ -136,7 +140,7 @@ const signUpUser=function(values){
   }
 
   //login
- const logInUser=function(values){ fetch('http://localhost:3000/user/login', {
+ const logInUser=function(values){ console.log("login function");fetch('http://localhost:3000/user/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -160,6 +164,7 @@ const signUpUser=function(values){
       localStorage.setItem('userId', resData.userId);
       localStorage.setItem('isadmin', resData.isadmin);
       $("#myModal").modal('hide');
+      console.log("successs");
       successmessage('Succesfull!!!!!');
       $(".logged-in").hide();
       $(".login-func").css("display","block");
@@ -172,28 +177,42 @@ const signUpUser=function(values){
 
   //add products 
   const addProducts=function(values){
-    console.log(values);
-  var formdata=new FormData();
+    console.log(values.name);
+ /* var formdata=new FormData();
   formdata.append('name',values.name);
   formdata.append('description',values.description);
-  formdata.append('price',values.price);
+  formdata.append('price',values.price);*/
   //formdata.append('image','values.Image');
-  console.log(formdata);
+  //console.log(formdata);
   fetch('http://localhost:3000', {
         method: "POST",
-        body: formdata,
+        body: JSON.stringify({
+          name: values.name,
+          price: values.price,
+          description: values.description
+        }),
         headers: {
-          'x-access-token': localStorage.getItem("token")
+          'x-access-token': localStorage.getItem("token"),
+          'Content-Type': 'application/json'
+          
         }
       })
         .then(res => {
           if (res.status !== 200 && res.status !== 201) {
             throw new Error('editing a post failed!');
           }
+         // getAllProducts();
+        //  $("#add-prod").click(function(){
+        //   getAllProducts();
+        //  });
           return res.json();
+          
         })
         .then(resData => {
-          console.log(resData)
+          console.log(resData);
+          $("#myModalprod").modal('hide');
+
+
         })
         .catch(err => {
           showerror(err);

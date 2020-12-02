@@ -21,8 +21,9 @@
           <ul class="nav navbar-nav navbar-right">
             <button type="button" class="btn btn-default btn-lg logged-in" id="myBtn2"><span class="glyphicon glyphicon-user"></span> Sign Up</button>
             <button type="button" class="btn btn-default btn-lg logged-in" id="myBtn"><span class="glyphicon glyphicon-log-in" ></span> Login</button>
-            <button type="button" class="btn btn-default btn-lg login-func" id="addprod"><span class="glyphicon glyphicon-plus"></span> Add products</button>
-            <button type="button" class="btn btn-default btn-lg login-func" ><span class="glyphicon glyphicon-log-out"></span> Log Out</button>
+            <div class="login-func">
+            <button type="button" class="btn btn-default btn-lg " id="addprod"><span class="glyphicon glyphicon-plus"></span> Add products</button>
+            <button type="button" class="btn btn-default btn-lg " ><span class="glyphicon glyphicon-log-out"></span> Log Out</button></div>
           </ul>
         </div></div>
       </nav>
@@ -125,7 +126,7 @@
                   <label for="usrname"><span class="glyphicon glyphicon-tag"></span> Role</label>
                   <input type="text" class="form-control" id="usrname" placeholder="admin or seller" min="5" required>
                 </div>-->
-                <button type="submit" class="btn btn-succes btn-block"><span class="glyphicon glyphicon-off" ></span> Add to Products</button>
+                <button type="submit" class="btn btn-succes btn-block" id="add-prod" onclick="myFunction()"><span class="glyphicon glyphicon-off" ></span> Add to Products</button>
               </form>
             </div>
             <div class="modal-footer">

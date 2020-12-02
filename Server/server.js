@@ -17,7 +17,6 @@ db.on('error', error => console.error(error));
 db.once('open',()=> {console.log('Connected to mongoDB');
 });
 
-app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 

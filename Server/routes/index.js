@@ -6,7 +6,7 @@ const isAuth= require('../middleware/isAuth');
 
 router.get('/', (req,res) => {
     Product.find().exec().then(docs=>{
-        console.log(docs);
+       // console.log(docs);
         res.status(200).json({doc: docs});
         return docs;
     }).catch(err => {
@@ -20,6 +20,7 @@ router.get('/', (req,res) => {
 });
 
 router.post('/', isAuth.verifyToken,(req,res) => {
+   // console.log('req:',req.body);
     const product = new Product({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
