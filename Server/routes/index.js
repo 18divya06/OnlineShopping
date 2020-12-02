@@ -2,6 +2,7 @@ const express= require('express');
 const router= express.Router();
 const Product= require('../models/index');
 const mongoose = require('mongoose');
+const isAuth= require('../middleware/isAuth');
 
 router.get('/', (req,res) => {
     Product.find().exec().then(docs=>{
@@ -18,7 +19,7 @@ router.get('/', (req,res) => {
         message: 'index GET req'});*/
 });
 
-router.post('/', (req,res) => {
+router.post('/', isAuth.verifyToken,(req,res) => {
     const product = new Product({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
@@ -28,7 +29,7 @@ router.post('/', (req,res) => {
     product.save().then(result =>{
         console.log(result);
         res.status(200).json({
-            message: 'index POST req',
+            message: 'Product created',
             createdProduct: result
         });
     }) 

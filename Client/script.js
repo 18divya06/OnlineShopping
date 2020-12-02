@@ -6,6 +6,9 @@ $(document).ready(function(){
     $("#myBtn2").click(function(){
       $("#myModal2").modal();
     });
+    $("#addprod").click(function(){
+      $("#myModalprod").modal();
+    });
     $("#signup-form").submit(function(event){
        var val=$('#signup-form :input');
        var values = {};
@@ -25,8 +28,15 @@ $(document).ready(function(){
      });
      logInUser(values);
    });
+   $("#prod-form").submit(function(event){
+        var val=$('#prod-form :input');
+        var values = {};
+        val.each(function(){
+          values[this.name] = this.value;
+        });
+        addProducts(values);
+   });
  getAllProducts();
- showerror();
  
   });
 
@@ -76,6 +86,9 @@ const getAllProducts = function(){fetch('http://localhost:3000')
           <div class="card-read-more">
               <a href="#" class="btn btn-link btn-block" id="${a._id}" style="color: #f9c200">
                   Details
+              </a><hr>
+              <a href="#" class="btn btn-link btn-block login-func isadmin"  style="color: #f9c200">
+                  Delete
               </a>
           </div>
       </div></div>`;
@@ -148,8 +161,42 @@ const signUpUser=function(values){
       localStorage.setItem('isadmin', resData.isadmin);
       $("#myModal").modal('hide');
       successmessage('Succesfull!!!!!');
+      $(".logged-in").hide();
+      $(".login-func").css("display","block");
+
     })
     .catch(err => {
       showerror(err);
     });
+  }
+
+  //add products 
+  const addProducts=function(values){
+    console.log(values);
+  var formdata=new FormData();
+  formdata.append('name',values.name);
+  formdata.append('description',values.description);
+  formdata.append('price',values.price);
+  //formdata.append('image','values.Image');
+  console.log(formdata);
+  fetch('http://localhost:3000', {
+        method: "POST",
+        body: formdata,
+        headers: {
+          'x-access-token': localStorage.getItem("token")
+        }
+      })
+        .then(res => {
+          if (res.status !== 200 && res.status !== 201) {
+            throw new Error('editing a post failed!');
+          }
+          return res.json();
+        })
+        .then(resData => {
+          console.log(resData)
+        })
+        .catch(err => {
+          showerror(err);
+        });
+
   }
