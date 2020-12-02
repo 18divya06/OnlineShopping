@@ -1,6 +1,10 @@
 
 // jquery Script
 $(document).ready(function(){
+  const socketIo=io('http://localhost:3000');
+  socketIo.on('createEventHandle',(data)=>{
+    getAllProducts();
+  })
     if(localStorage.getItem("token")!=null){
         $(".logged-in").hide();
         $(".login-func").css("display","block");
@@ -109,7 +113,7 @@ const getAllProducts = function(){fetch('http://localhost:3000')
                 </a>
               </h4>
               <p class="text-center">
-                $${a.price}
+                €${a.price}
               </p>
               <p id="${a._id}desc" style="display:none;">${a.description}</p>
           </div>
@@ -253,7 +257,7 @@ const signUpUser=function(values){
           console.log(resData);
             $("#addProdModalError").hide();
           $("#myModalprod").modal('hide');
-          getAllProducts();
+         // getAllProducts();
 
         })
         .catch(err => {

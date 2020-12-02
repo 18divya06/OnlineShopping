@@ -3,7 +3,7 @@ const router= express.Router();
 const Product= require('../models/index');
 const mongoose = require('mongoose');
 const isAuth= require('../middleware/isAuth');
-
+const io= require('../socket');
 router.get('/', (req,res) => {
     Product.find().exec().then(docs=>{
        // console.log(docs);
@@ -29,6 +29,7 @@ router.post('/', isAuth.verifyToken,(req,res) => {
     });
     product.save().then(result =>{
         console.log(result);
+        io.getSocket().emit('createEventHandle',{ product: result});
         res.status(200).json({
             message: 'Product created',
             createdProduct: result
@@ -87,7 +88,6 @@ router.patch('/:productId', (req,res) => {
      Product.remove({_id: id}).exec().then(result =>{
          res.status(200).json(result);
      }).catch(err => {
-        
         console.log(err);
         res.status(500).json({
             error: err

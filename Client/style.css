@@ -75,7 +75,7 @@ body {
 /* Modals Style */
 .modal-header, .close{
     background-color: #f9c200;
-    color:red;
+    color:white !important;
     text-align: center;
     font-size: 30px;
   }

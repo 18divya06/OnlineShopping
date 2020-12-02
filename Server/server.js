@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Cors = require('cors');
 
-
 const app=express();
 app.use(Cors());
 mongoose.connect('mongodb+srv://admin:' + process.env.MONGO_ATLAS_PWD + '@node-shop.t2vdl.mongodb.net/' + process.env.DB + '?retryWrites=true&w=majority', {
@@ -48,4 +47,8 @@ process.on('warning', (warning) => {
     console.log(warning.stack);
 });*/
 
-app.listen(process.env.PORT || 3000)
+const socketIo= require("./socket").init(
+    app.listen(process.env.PORT || 3000))
+socketIo.on('connection',socket=>{
+    console.log("Connnection Established!!!!");
+  })
