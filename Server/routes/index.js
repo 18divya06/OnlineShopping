@@ -4,21 +4,22 @@ const Product= require('../models/index');
 const mongoose = require('mongoose');
 const isAuth= require('../middleware/isAuth');
 const io= require('../socket');
+
+//get all products
 router.get('/', (req,res) => {
     Product.find().exec().then(docs=>{
        // console.log(docs);
         res.status(200).json({doc: docs});
         return docs;
     }).catch(err => {
-        console.log(err);
+        //console.log(err);
         res.status(500).json({
             error: err
         });
     });
-    /*res.status(200).json({
-        message: 'index GET req'});*/
 });
 
+//add new products
 router.post('/', isAuth.verifyToken,(req,res) => {
    // console.log('req:',req.body);
     const product = new Product({
@@ -28,7 +29,7 @@ router.post('/', isAuth.verifyToken,(req,res) => {
         description: req.body.description
     });
     product.save().then(result =>{
-        console.log(result);
+        //console.log(result);
         io.getSocket().emit('createEventHandle',{ product: result});
         res.status(200).json({
             message: 'Product created',
@@ -36,7 +37,7 @@ router.post('/', isAuth.verifyToken,(req,res) => {
         });
     }) 
     .catch(err => {
-        console.log(err);
+        //console.log(err);
         res.status(500).json({
             error: err
         });
@@ -44,13 +45,14 @@ router.post('/', isAuth.verifyToken,(req,res) => {
     
 });
 
+// get specific product
 router.get('/:productId', (req,res) => {
    const id= req.params.productId;
    Product.findById(id).exec().then(doc =>{
-       console.log(doc);
+       //console.log(doc);
        res.status(200).json(doc);
    }).catch(err => {
-       console.log(err);
+       //console.log(err);
        res.status(500).json({
            error: err
        });
@@ -60,6 +62,7 @@ router.get('/:productId', (req,res) => {
     id: id});*/
 });
 
+//edit the product
 router.patch('/:productId', (req,res) => {
     const id= req.params.productId;
    /* res.status(200).json({
@@ -70,7 +73,7 @@ router.patch('/:productId', (req,res) => {
          updateOps[ops.propName] = ops.value;
      }
      Product.update({_id: id},{$set: updateOps}).exec().then(doc =>{
-        console.log(doc);
+        //console.log(doc);
         res.status(200).json(doc);
     }).catch(err => {
         console.log(err);
@@ -80,6 +83,7 @@ router.patch('/:productId', (req,res) => {
      });
  });
 
+ //delete the product
  router.delete('/:productId',isAuth.verifyToken, isAuth.isAdminToken,(req,res) => {
   const id= req.params.productId;
      /* res.status(200).json({
@@ -88,7 +92,7 @@ router.patch('/:productId', (req,res) => {
      Product.remove({_id: id}).exec().then(result =>{
          res.status(200).json(result);
      }).catch(err => {
-        console.log(err);
+        //console.log(err);
         res.status(500).json({
             error: err
         });

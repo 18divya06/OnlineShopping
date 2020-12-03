@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const user= require("../models/users")
+
+//checks weather the user requesting the route is verified logged in account or not
 exports.verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
   //console.log('req body:', req.body);
@@ -16,8 +18,9 @@ exports.verifyToken = (req, res, next) => {
   });
 };
 
+// speacial admin privileges are verified 
 exports.isAdminToken = (req, res, next) =>{
-  console.log("middle2"+ req.body.userId);
+ // console.log("middle2"+ req.body.userId);
   if(req.body.userId){
       user.findById(req.body.userId).exec((err, user) => {
         if (err) {

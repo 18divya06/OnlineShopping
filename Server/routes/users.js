@@ -26,14 +26,14 @@ router.post('/signup',(req, res)=>{
                         isadmin: req.body.isadmin
                     });
                     user.save().then(result =>{
-                        console.log(result);
+                        //console.log(result);
                         res.status(200).json({
                             message: 'user created',
                             
                         });
                     }) 
                     .catch(err => {
-                        console.log(err);
+                        //console.log(err);
                         res.status(500).json({
                             error: err
                         });
@@ -65,12 +65,13 @@ router.post('/login',(req, res)=>{
                 {
                     expiresIn: "1h"
                 });
-                console.log("login successful");
+               // console.log("login successful");
                 return res.status(200).json({
                     message: 'Auth Succcessful',
                     token: token,
                     isadmin: user[0].isadmin,
-                    userId: user[0]._id
+                    userId: user[0]._id,
+                    username: user[0].username
                 });
             }
             return res.status(401).json({
@@ -94,7 +95,7 @@ router.delete('/:userId', (req, res)=>{
     });*/
    User.remove({_id: id}).exec().then(result =>{
         res.status(200).json({
-            message: 'Deleted Product'
+            message: 'Deleted User'
         });
     }).catch(err => {
        console.log(err);

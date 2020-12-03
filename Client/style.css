@@ -16,7 +16,7 @@
 html,
 body {
   -moz-box-sizing: border-box;
-       box-sizing: border-box;
+  box-sizing: border-box;
   height: 100%;
   width: 100%;
   background: #FFF;
@@ -66,7 +66,7 @@ body {
   border-top: 1px solid #D4D4D4;
 }
 .card-read-more a {
-  text-decoration: none !important;
+  /* text-decoration: none !important; */
   padding:10px;
   font-weight:600;
   text-transform: uppercase
