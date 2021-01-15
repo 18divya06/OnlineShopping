@@ -308,6 +308,33 @@ const deleteProduct = function (id) {
 
 }
 
+// premium customer
+/*const premiumMember = function (id) {
+  fetch('http://localhost:3000/' + id, {
+    method: "DELETE",
+    headers: {
+      'x-access-token': localStorage.getItem("token"),
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      userId: localStorage.getItem("userId")
+    })
+  }).then(resData => {
+
+    if (resData.status === 200) {
+      $("#" + id + "parent").hide();
+      successmessage('Deletion successful');
+    } else {
+      showerror('Deletion failed !!!');
+      console.log("Deletion failed!!!");
+    }
+  }).catch(err => {
+    showerror(err);
+  });
+
+}*/
+
+
 //detail Product
 const detailProducts = function (id) {
   fetch('http://localhost:3000/' + id).then(res => {
@@ -345,4 +372,30 @@ const detailProducts = function (id) {
   .catch(err => {
     console.log(err);
   });
+}
+
+//Add to cart
+const addProduct = function (id) {
+  fetch('http://localhost:3000/' + id, {
+    method: "OPTIONS",
+    headers: {
+      'x-access-token': localStorage.getItem("token"),
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      userId: localStorage.getItem("userId")
+    })
+  }).then(resData => {
+
+    if (resData.status === 200) {
+      $("#" + id + "parent").hide();
+      successmessage('Deletion successful');
+    } else {
+      showerror('Deletion failed !!!');
+      console.log("Deletion failed!!!");
+    }
+  }).catch(err => {
+    showerror(err);
+  });
+
 }

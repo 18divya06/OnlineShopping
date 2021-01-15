@@ -1,8 +1,8 @@
 {
     "env": {
         
-        "MONGO_ATLAS_PWD": "12345",
-        "DB":"node-shop",
+        "MONGO_ATLAS_PWD": "1234",
+        "DB":"LMS",
         "JWT_Key": "secretsecretsecret"
     }
 }
